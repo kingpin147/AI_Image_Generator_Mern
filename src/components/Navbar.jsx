@@ -1,34 +1,57 @@
 import React from "react";
 import styled, { ThemeProvider } from "styled-components";
-
-const defaultTheme = {
-  bg: "#000000",
-  text_primary: "#FFFFFF",
-};
+import Button from '../components/button'; 
+import { AddRounded, ExploreRounded } from "@mui/icons-material";
+import { useNavigate, useLocation } from 'react-router-dom'; 
 
 const Container = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  background: ${({ theme }) => theme.bg};
+  flex: 1;
+  background: ${({ theme }) => theme.navbar};
   color: ${({ theme }) => theme.text_primary};
-  overflow-x: hidden;
-  overflow-y: hidden;
-  transition: all 0.3s ease;
+  font-weight: bold;
+  font-size: 22px;
+  padding: 14px 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+  
+  @media only screen and (max-width: 600px) {
+    padding: 10px 12px;
+  }
 `;
 
 const Navbar = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const path = location.pathname.split("/");
+
   return (
-    <Container>Navbar</Container>
+    <Container>
+      GenAI
+      {path[1] === "post" ? (
+        <Button 
+          text="Explore Posts"
+          leftIcon={
+            <ExploreRounded
+              style={{ fontSize: "18px" }}
+            />
+          }
+          onClick={() => navigate("/explore-posts")}
+        />
+      ) : null}
+
+      <Button
+        onClick={() => navigate("/post")}
+        text="Create Post"
+        leftIcon={
+          <AddRounded
+            style={{ fontSize: "18px" }}
+          />
+        }
+      />
+    </Container>
   );
 };
 
-const App = () => {
-  return (
-    <ThemeProvider theme={defaultTheme}>
-      <Navbar />
-    </ThemeProvider>
-  );
-};
-
-export default App;
+export default Navbar;
